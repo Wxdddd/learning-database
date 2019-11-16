@@ -255,17 +255,19 @@ $ sudo yum install docker-ce
 
 - 创建一个container，运行并退出 `$ docker run centos(镜像名称。centos:7指定版本为7)`
 
-- 创建一个container，交互式运行 `$ docker run -it centosid`
+- 创建一个container，交互式运行 `$ docker run -it image_id`
 
 - 删除一个container `$ docker container rm 732879e51ecf(container id)` 或 `$ docker rm  732879e51ecf(container id)`
 
-- 创建并后台运行container `$ docker run -d centos(镜像名称)`
+- 创建并**后台运行**container `$ docker run -d centos(image名称或id)`
 
   > -d：使用时必须在镜像中要有一个常驻内存的进程，比如nginx，db，不会停的shell脚本。
   >
-  > 否则使用命令`$ docker run -it -d winn/centos-vim`即可
+  > 否则使用命令`$ docker run -it -d image_name(id)`即可
 
-- 创建container后台运行并**指定名称**：`docker run -d --name=demo centos`
+- 创建并设置**环境变量**并后台运行 `$ docker run -d -e NAME=WINXUDONG  image_name(id)`
+
+- 创建container后台运行并**指定名称**：`docker run -d --name=demo image_name(id)` `
 
 - 删除所有container
 
@@ -299,8 +301,11 @@ $ sudo yum install docker-ce
 - 打印正在运行的container的ip地址：`docker exec -it dedf40b94b72(container id) ip a`
 
 - 停止正在运行的container：`$ docker stop ded(container id简写)` 或者 `$ docker stop demo(container name)`
+
 - 启动container：`$ docker start demo(container name或者id)`
+
 - 查看container信息：`$ docker inspect dedf40b94b72(container_id)`
+
 - https://docs.docker.com/engine/reference/commandline/container/
 
 ### 11. 构建Docker镜像
