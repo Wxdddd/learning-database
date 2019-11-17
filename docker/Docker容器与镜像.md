@@ -62,7 +62,7 @@ https://www.vagrantup.com/downloads.html
 - 执行 `vagrant halt`停止虚拟机运行
 - 执行 `vagrant destroy`删除虚拟机
 
-### 7. Centos7创建Docker社区版
+### 7. Centos7安装Docker社区版
 
 #### 教程地址
 
@@ -160,7 +160,7 @@ $ sudo yum install docker-ce
 
   ![image-20191103172931077](images/Docker环境与搭建/image-20191103172931077.png)
 
-  docker镜像地址 ： https://hub.docker.com/
+  `docker镜像地址` ： https://hub.docker.com/
 
 #### Image创建
 
@@ -424,7 +424,7 @@ Successfully tagged winn/centos-vim-new:latest
 
 #### RUN
 
-> `RUN 执行命令并创建新的 image layer`
+> `RUN 执行命令并创建新的image`
 
 ```shell
 RUN yum update && yum install -y vim \
