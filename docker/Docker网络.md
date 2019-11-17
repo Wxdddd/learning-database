@@ -138,7 +138,7 @@ PING 192.168.1.1 (192.168.1.1) 56(84) bytes of data.
 64 bytes from 192.168.1.1: icmp_seq=3 ttl=64 time=0.050 ms
 ```
 
-## 3. Docker容器之间互相访问 - bridge
+## 3. Docker容器如何访问外网 - bridge
 
 ### 创建并运行一个docker容器
 
@@ -271,7 +271,7 @@ docker0		8000.024243058245	no		veth48a3664
 
 ![image-20191109114934452](images/Docker网络/image-20191109114934452.png)
 
-## 4. Docker容器如何访问外网 - bridge
+## 4. Docker容器之间互相访问 - bridge
 
 > docker0 与 eth0之间搭建 `NAT `做网络地址转换来访问外网
 
