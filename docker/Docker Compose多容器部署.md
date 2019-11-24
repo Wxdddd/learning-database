@@ -67,7 +67,7 @@ CONTAINER ID        IMAGE               COMMAND                  CREATED        
 >
 >建议使用 version3 的版本，version3版本可用于多机，version2版本只能用于单机。
 >
->`官方文档：`https://docs.docker.com/compose/
+>`官方文档`：https://docs.docker.com/compose/compose-file/
 >
 >- Docker Compose 是一个工具
 >- 这个工具可以通过一个yml文件定义多容器的docker应用

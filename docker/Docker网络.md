@@ -914,7 +914,5 @@ PING 10.0.0.3 (10.0.0.3): 56 data bytes
 64 bytes from 10.0.0.3: seq=0 ttl=64 time=0.579 ms
 64 bytes from 10.0.0.3: seq=1 ttl=64 time=0.411 ms
 64 bytes from 10.0.0.3: seq=2 ttl=64 time=0.483 ms
-^C
-vagrant@docker-node1:~$
 ```
 
