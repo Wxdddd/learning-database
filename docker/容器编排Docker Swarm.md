@@ -406,7 +406,7 @@ networks:
     driver: overlay
 ```
 
-> `mode`: 模式，任一`global`（swarm集群只有一个容器）或`replicated`（容器的指定数量）。默认值为`replicated`。
+> `mode`: 模式，`global`（swarm集群只有一个容器）或`replicated`（容器的指定数量）。默认值为`replicated`。
 >
 > `constraints`: 指定容器存放在哪一个节点
 >
@@ -430,7 +430,6 @@ networks:
 
 ```sh
 [vagrant@swarm-manager wordpress]$ ll
-total 4
 -rw-r--r--. 1 vagrant vagrant 797 11月  9 01:36 docker-compose.yml
 ```
 
