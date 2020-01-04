@@ -208,3 +208,156 @@ public @interface Controller {
 @ComponentScan(value = {"com.siti"})
 ```
 
+### 首选Bean注解
+
+@Primary：自动装配时当出现多个Bean候选者时，被注解为@Primary的Bean将作为首选者，否则将抛出异常 
+
+### 条件注解
+
+@Conditional 根据条件筛选是否注入的Bean
+
+#### 自定义条件注解
+
+- @Conditional  + Conditional 
+
+```java
+import org.springframework.context.annotation.Condition;
+import org.springframework.context.annotation.ConditionContext;
+import org.springframework.core.type.AnnotatedTypeMetadata;
+
+public class TestCondition implements Condition {
+    @Override
+    public boolean matches(ConditionContext conditionContext, AnnotatedTypeMetadata annotatedTypeMetadata) {
+        // 自定义判断逻辑 返回true或false
+        return false;
+    }
+}
+
+// 调用
+@Bean
+@Conditional(TestCondition.class)
+public LocaleResolver localeResolver() {
+    CookieLocaleResolver slr = new CookieLocaleResolver();
+    // 设置默认区域
+    slr.setDefaultLocale(Locale.CHINA);
+    slr.setCookieMaxAge(3600);//设置cookie有效期.
+    return slr;
+}
+```
+
+- ConditionalContext 可获取 bean定义、bean工厂、配置信息、资源加载信息、类信息
+
+```java
+public interface ConditionContext {
+
+	/**
+	 * Return the {@link BeanDefinitionRegistry} that will hold the bean definition
+	 * should the condition match.
+	 * @throws IllegalStateException if no registry is available (which is unusual:
+	 * only the case with a plain {@link ClassPathScanningCandidateComponentProvider})
+	 */
+	BeanDefinitionRegistry getRegistry();
+
+	/**
+	 * Return the {@link ConfigurableListableBeanFactory} that will hold the bean
+	 * definition should the condition match, or {@code null} if the bean factory is
+	 * not available (or not downcastable to {@code ConfigurableListableBeanFactory}).
+	 */
+	@Nullable
+	ConfigurableListableBeanFactory getBeanFactory();
+
+	/**
+	 * Return the {@link Environment} for which the current application is running.
+	 */
+	Environment getEnvironment();
+
+	/**
+	 * Return the {@link ResourceLoader} currently being used.
+	 */
+	ResourceLoader getResourceLoader();
+
+	/**
+	 * Return the {@link ClassLoader} that should be used to load additional classes
+	 * (only {@code null} if even the system ClassLoader isn't accessible).
+	 * @see org.springframework.util.ClassUtils#forName(String, ClassLoader)
+	 */
+	@Nullable
+	ClassLoader getClassLoader();
+
+}
+```
+
+#### @ConditionalOnProperty 
+
+- 指定的属性是否有指定的值
+
+```java
+// 判断配置文件的hero.condition是否为test
+@Bean
+@ConditionalOnProperty(value = "hero.condition", havingValue = "test")
+public LocaleResolver localeResolver() {
+    CookieLocaleResolver slr = new CookieLocaleResolver();
+    // 设置默认区域
+    slr.setDefaultLocale(Locale.CHINA);
+    slr.setCookieMaxAge(3600);//设置cookie有效期.
+    return slr;
+}
+```
+
+```java
+// 判断配置文件的hero.condition是否为prod。matchIfMissing = true 表示如果配置文件没有hero.condition配置则默认注入当前bean
+@Bean
+@ConditionalOnProperty(value = "hero.condition", havingValue = "prod", matchIfMissing = true)
+public LocaleResolver localeResolver() {
+    CookieLocaleResolver slr = new CookieLocaleResolver();
+    // 设置默认区域
+    slr.setDefaultLocale(Locale.CHINA);
+    slr.setCookieMaxAge(3600);//设置cookie有效期.
+    return slr;
+}
+```
+
+
+
+#### @ConditionalOnClass 
+
+- 当Spring Ioc容器内存在指定Class的条件
+
+#### @ConditionalOnExpression
+
+- 基于SpEL表达式作为条件判断
+
+#### @ConditionalOnJava 
+
+- 基于JVN版本作为判断条件
+
+#### @ConditionalJndi 
+
+- 基于JNDI存在时查找指定的位置
+
+#### @ConditionalOnMissingBean
+
+- 当Spring Ioc容器内不存在指定Bean的条件
+
+#### @ConditionalOnMissingClass
+
+- 当Spring Ioc容器内不存在指定Class的条件
+
+#### @ConditionalOnNotWebApplication
+
+- 当前项目不是web项目的条件
+
+#### @ConditionalOnWebApplication  
+
+- 当前项目是web项目的条件
+
+#### @ConditionalOnResource 
+
+- 类路径是否有指定的值
+
+#### @ConditionalOnSingleCandidate
+
+- 当指定Bean在Spring Ioc 容器内只有一个，或者虽然有多个但是指定首选的Bean
+
+
+
