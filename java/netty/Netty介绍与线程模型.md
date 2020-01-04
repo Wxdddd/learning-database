@@ -46,6 +46,10 @@ Netty是由JBOSS提供的一个java开源框架，是一个高性能、高可扩
 
 ![image-20200104213813895](images/Netty介绍与线程模型/image-20200104213813895.png)
 
+- Netty线程模型流程图
+
+![image-20200101193503621](images/Netty介绍与线程模型/image-20200101193503621.png)
+
 ### **EventLoopGroup 初始化过程**
 
 ![image-20200104213846786](images/Netty介绍与线程模型/image-20200104213846786.png)
