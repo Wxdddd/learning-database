@@ -88,7 +88,7 @@ public @interface Controller {
 
 @Component 为基础的注解，主要将 组件/类/bean 实例化加入到IOC容器中。
 
-@Service、@Controller、@Repository 与 @Component 在当前最新的spring版本（5.2）的作用是没有区别的，可以任意使用。他们的作用主要是标明一个类的不同的作用的。
+@Service、@Controller、@Repository 与 @Component 在当前最新的spring版本（5.2.2）的作用是没有区别的，可以任意使用。他们的作用主要是标明一个类的不同的作用的。
 
 > 例如：@Service 标明当前类是一种服务。@Controller 标明当前类是一个控制器。@Repository 标明当前类是一个仓储。他们都有 @Component 的功能。
 
@@ -167,7 +167,7 @@ public @interface Controller {
       private TestInterface testInterface;
   
       //构造注入
-      @Autowired
+      //@Autowired
       public Test2Controller(TestInterface testInterface) {
           this.testInterface = testInterface;
       }
