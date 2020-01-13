@@ -224,33 +224,35 @@ public @interface Controller {
 >
 > ```java
 > public interface TestService {
->     String test();
+>  String test();
 > }
 > 
 > @Service
 > public class TestAServiceImpl implements TestService {
->     @Override
->     public String test() {
->         return "A";
->     }
+>  @Override
+>  public String test() {
+>      return "A";
+>  }
 > }
 > 
 > @Service
 > public class TestBServiceImpl implements TestService {
->     @Override
->     public String test() {
->         return "B";
->     }
+>  @Override
+>  public String test() {
+>      return "B";
+>  }
 > }
 > 
 > @RestController
+> @RequestMapping("test")
 > public class TestController {
->     @Autowired
->     private TestService testService;
-> 
->     public String test() {
->         return  testService.test();
->     }
+>  @Autowired
+>  private TestService testService;
+>     
+>  @RequestMapping("")
+>  public String test() {
+>      return  testService.test();
+>  }
 > }
 > 
 > ```
@@ -265,10 +267,10 @@ public @interface Controller {
 > @Service
 > @Primary
 > public class TestAServiceImpl implements TestService {
->     @Override
->     public String test() {
->         return "A";
->     }
+>  @Override
+>  public String test() {
+>      return "A";
+>  }
 > }
 > ```
 >
