@@ -1,13 +1,13 @@
 ## Spring 注解
 
-### Spring IOC容器注入Bean的三种方式
+### 1. Spring IOC容器注入Bean的三种方式
 
 1. XML
 2. 注解
 
 3. 编程方式
 
-### 模式注解（stereotype annotations）
+### 2. 模式注解（stereotype annotations）
 
 - @Component
 - @Service
@@ -126,7 +126,7 @@ public @interface Controller {
 
   
 
-### Spring依赖注入时机与延迟实例化
+### 3. Spring依赖注入时机与延迟实例化
 
 - @Autowired 依赖注入允许null（默认不允许为null）
 
@@ -136,7 +136,7 @@ public @interface Controller {
 
 
 
-### 成员变量注入、Setter注入与构造注入
+### 4. 成员变量注入、Setter注入与构造注入
 
 - 成员变量注入
 
@@ -204,13 +204,13 @@ public @interface Controller {
   }
   ```
 
-### 包扫描机制
+### 5. 包扫描机制
 
 ```java
 @ComponentScan(value = {"com.siti"})
 ```
 
-### 首选Bean注解 @Primary
+### 6. 首选Bean注解 @Primary
 
 @Primary：自动装配时当出现多个Bean候选者时，被注解为@Primary的Bean将作为首选者。
 
@@ -224,23 +224,23 @@ public @interface Controller {
 >
 > ```java
 > public interface TestService {
->  String test();
+>  	String test();
 > }
 > 
 > @Service
 > public class TestAServiceImpl implements TestService {
->  @Override
->  public String test() {
->      return "A";
->  }
+>      @Override
+>      public String test() {
+>          	return "A";
+>      }
 > }
 > 
 > @Service
 > public class TestBServiceImpl implements TestService {
->  @Override
->  public String test() {
->      return "B";
->  }
+>      @Override
+>      public String test() {
+>          	return "B";
+>      }
 > }
 > 
 > @RestController
@@ -249,10 +249,10 @@ public @interface Controller {
 >  @Autowired
 >  private TestService testService;
 >     
->  @RequestMapping("")
->  public String test() {
->      return  testService.test();
->  }
+>      @RequestMapping("")
+>      public String test() {
+>          	return  testService.test();
+>      }
 > }
 > 
 > ```
@@ -267,10 +267,10 @@ public @interface Controller {
 > @Service
 > @Primary
 > public class TestAServiceImpl implements TestService {
->  @Override
->  public String test() {
->      return "A";
->  }
+>      @Override
+>      public String test() {
+>          	return "A";
+>      }
 > }
 > ```
 >
@@ -367,7 +367,7 @@ public interface ConditionContext {
 }
 ```
 
-### 条件注解的扩展注解
+### 7. 条件注解的扩展注解
 
 #### @ConditionalOnProperty 
 
@@ -415,8 +415,6 @@ public class TestConfig {
 }
 ```
 
-
-
 #### @ConditionalOnClass 
 
 - 当Spring Ioc容器内存在指定Class的条件
@@ -457,5 +455,81 @@ public class TestConfig {
 
 - 当指定Bean在Spring Ioc 容器内只有一个，或者虽然有多个但是指定首选的Bean
 
+### 8. SpringBootApplication注解的理解
 
+> **`在使用Spring的时主要做的是如何把我们自己的类和第三方的SDK加入到Spring IOC容器中去。`**
 
+SpringBootApplication 主要有三个注解
+
+- @SpringBootConfiguration
+- @EnableAutoConfiguration
+- @ComponentScan
+
+#### @SpringBootConfiguration
+
+通过源码发现他就是一个@Configuration注解的配置类
+
+```java
+@Target(ElementType.TYPE)
+@Retention(RetentionPolicy.RUNTIME)
+@Documented
+@Configuration
+public @interface SpringBootConfiguration {
+	@AliasFor(annotation = Configuration.class)
+	boolean proxyBeanMethods() default true;
+
+}
+```
+
+#### @ComponentScan
+
+包扫描注解 排除某些类
+
+#### @EnableAutoConfiguration
+
+`模块（Enable）`自动配置类，作用是加载bean到Spring IOC容器中去。
+
+##### @Import
+
+@EnableAutoConfiguration注解下的@Import注解。导入类，该类必须继承ImportSelector。
+
+```java
+public interface ImportSelector {
+
+	/**
+	 * Select and return the names of which class(es) should be imported based on
+	 * the {@link AnnotationMetadata} of the importing @{@link Configuration} class.
+	 */
+	String[] selectImports(AnnotationMetadata importingClassMetadata);
+
+}
+
+```
+
+selectImports(AnnotationMetadata importingClassMetadata); 方法是加载第三方SDK bean的核心方法。
+
+getCandidateConfigurations //获取候选配置类 加载 spring.factories文件
+
+### 9. 错误异常注解
+
+- @ControllerAdvice 
+
+> 全局异常捕捉处理
+
+- @ExceptionHandler
+
+> 异常处理器。具体处理哪种类型的异常。
+
+```java
+@ControllerAdvice
+public class GlobalExceptionAdvice {
+    @ExceptionHandler(Exception.class)
+    public void handleException(HttpServletRequest request, Exception e) {
+        System.out.println("hello");
+    }
+}
+```
+
+- @RestControllerAdvice
+
+> 相当于 @ResponseBody + @ControllerAdvice
