@@ -276,11 +276,11 @@ public @interface Controller {
 >
 > 这样Spring在自动装配时就会只加载 TestAServiceImpl 的Bean，并且Controller也就知道了依赖的实现类就是TestAServiceImpl。
 
-### 条件注解
+### 7. 条件注解
 
 @Conditional 根据条件筛选是否向Spring IOC 容器注入Bean
 
-#### 自定义条件注解
+**自定义条件注解**
 
 - @Conditional  + Conditional  示例
 
@@ -367,7 +367,7 @@ public interface ConditionContext {
 }
 ```
 
-### 7. 条件注解的扩展注解
+### 8. 条件注解的扩展注解
 
 #### @ConditionalOnProperty 
 
@@ -455,7 +455,7 @@ public class TestConfig {
 
 - 当指定Bean在Spring Ioc 容器内只有一个，或者虽然有多个但是指定首选的Bean
 
-### 8. SpringBootApplication注解的理解
+### 9. SpringBootApplication注解的理解
 
 > **`在使用Spring的时主要做的是如何把我们自己的类和第三方的SDK加入到Spring IOC容器中去。`**
 
@@ -510,7 +510,7 @@ selectImports(AnnotationMetadata importingClassMetadata); 方法是加载第三�
 
 getCandidateConfigurations //获取候选配置类 加载 spring.factories文件
 
-### 9. 错误异常注解
+### 10. 错误异常处理注解
 
 - @ControllerAdvice 
 
@@ -520,16 +520,117 @@ getCandidateConfigurations //获取候选配置类 加载 spring.factories文件
 
 > 异常处理器。具体处理哪种类型的异常。
 
+- @RestControllerAdvice
+
+> 相当于 @ResponseBody + @ControllerAdvice
+
+- @ResponseStatus
+
+> @ResponseStatus注解有两种用法，一种是加载自定义异常类上，一种是加在目标方法中
+>
+> 注解中有两个参数，value属性设置异常的状态码，reaseon是异常的描述，
+>
+> 需要重点注意的是不管该方法是不是发生了异常，将@ResponseStatus注解加在目标方法上，一定会抛出异常。但是如果没有发生异常的话方法会正常执行完毕。
+
 ```java
-@ControllerAdvice
+@RestControllerAdvice
+@Slf4j
 public class GlobalExceptionAdvice {
+
     @ExceptionHandler(Exception.class)
-    public void handleException(HttpServletRequest request, Exception e) {
-        System.out.println("hello");
+    @ResponseStatus(code = HttpStatus.INTERNAL_SERVER_ERROR)
+    public UnifyResponse handleException(HttpServletRequest request, Exception e) {
+        String method = request.getMethod();
+        log.error(e.getMessage());
+        UnifyResponse message = new UnifyResponse(9999, e.getMessage(), method + " " + request.getRequestURI());
+        return message;
+    }
+
+    @ExceptionHandler(HttpException.class)
+    public void handleHttpException(HttpServletRequest request, HttpException e) {
+        UnifyResponse message = new UnifyResponse(1001,"运行时异常", "url");
     }
 }
 ```
 
-- @RestControllerAdvice
+### 11.  自定义类配置管理文件
 
-> 相当于 @ResponseBody + @ControllerAdvice
+- @ConfigurationProperties
+
+> 可以将外部配置文件（比如`exception-code.properties`）加载进来，填充对象的对应字段的数据，然后供其他Bean使用。
+
+- @PropertySource
+
+> Spring框架提供了PropertySource注解，目的是加载指定的属性文件。
+>
+> * 资源文件路径，可以是数据多个文件地址
+>
+>   ```java
+>   @PropertySources({
+>           @PropertySource("file:${config.path}"),
+>   })
+>   ```
+>
+> * 可以是classpath地址如：
+>
+>   *  "classpath:/com/app.properties"
+>
+> * 也可以是对应的文件系统地址如：
+>
+>   *  ("file:/path/to/file"）
+>   *  (value = {"file:${config.path}"}, encoding="utf-8")
+
+示例：
+
+exception-code.properties
+
+```properties
+winn.codes[10000] = "通用错误"
+winn.codes[10001] = "通用参数错误"
+```
+
+ExceptionCodeConfiguration.class
+
+```java
+@Getter
+@Setter
+@ConfigurationProperties(prefix = "winn")
+@PropertySource(value = "classpath:config/exception-code.properties", encoding = "UTF-8")
+@Component
+public class ExceptionCodeConfiguration {
+
+    private Map<Integer,String> codes = Maps.newHashMap();
+
+    public String getMessage(int code) {
+        String message = codes.get(code);
+        return message;
+    }
+}
+```
+
+> @ConfigurationProperties(prefix = "winn")：指定配置文件中内容的前缀。
+>
+> @PropertySource(value = "classpath:config/exception-code.properties", encoding = "UTF-8")：指定读取的配置文件
+>
+> @Component：将类注入到spring容器
+>
+> private Map<Integer,String> codes = Maps.newHashMap(); 
+>
+> 初始化时会将exception-code.properties 配置文件中winn.codes开头的配置全部读取到 Map中去。
+
+### 12. 通过接口形式发现类
+
+示例：
+
+```java
+@Component
+public class AutoPrefixConfiguration implements WebMvcRegistrations {
+
+    @Override
+    public RequestMappingHandlerMapping getRequestMappingHandlerMapping() {
+        return new AutoPrefixUrlMapping();
+    }
+
+}
+```
+
