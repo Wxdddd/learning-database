@@ -608,15 +608,15 @@ public class ExceptionCodeConfiguration {
 }
 ```
 
-> @ConfigurationProperties(prefix = "winn")：指定配置文件中内容的前缀。
+> - @ConfigurationProperties(prefix = "winn")：指定配置文件中内容的前缀。
 >
-> @PropertySource(value = "classpath:config/exception-code.properties", encoding = "UTF-8")：指定读取的配置文件
+> - @PropertySource(value = "classpath:config/exception-code.properties", encoding = "UTF-8")：指定读取的配置文件
 >
-> @Component：将类注入到spring容器
+> - @Component：将类注入到spring容器
 >
-> private Map<Integer,String> codes = Maps.newHashMap(); 
+> - private Map<Integer,String> codes = Maps.newHashMap(); 
 >
-> 初始化时会将exception-code.properties 配置文件中winn.codes开头的配置全部读取到 Map中去。
+>   初始化时会将exception-code.properties 配置文件中winn.codes开头的配置全部读取到 Map中去。
 
 ### 12. 通过接口形式发现类
 
