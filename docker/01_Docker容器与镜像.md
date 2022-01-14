@@ -164,7 +164,7 @@ $ sudo yum install docker-ce
 
 #### Image创建
 
-- 创建一个C的hell-word程序
+- 创建一个C的hello-word程序
 
   ```shell
   $ sudo mkdir hello-word
