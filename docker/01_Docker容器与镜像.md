@@ -8,6 +8,8 @@ https://www.docker.com/
 
 https://docs.docker.com/
 
+
+
 ### 3. Mac安装Docker（方式一）
 
 #### 下载Docker Desktop on Mac
@@ -251,7 +253,7 @@ $ sudo yum install docker-ce
 
 - 查看当前正在运行的container（容器） `$ docker container ls` 或 `$ docker ps`
 
-- 列举出当前所有的container（容器） `$ docker container ls -a` 或 `$ docker ps -a`
+- 列举出所有的container（容器）包含历史执行过的容器 `$ docker container ls -a` 或 `$ docker ps -a`
 
 - 创建一个container，运行并退出 `$ docker run centos(镜像名称。centos:7指定版本为7)`
 
@@ -267,7 +269,9 @@ $ sudo yum install docker-ce
 
 - 创建并设置**环境变量**并后台运行 `$ docker run -d -e NAME=WINXUDONG  image_name(id)`
 
-- 创建container后台运行并**指定名称**：`docker run -d --name=demo image_name(id)` `
+- 创建container后台运行并**指定名称**：`docker run -d --name=demo image_name(id)` 
+
+- 创建container后台运行并做**端口映射**：`docker run -d -p 80:80 image_name(id)`
 
 - 删除所有container
 
@@ -296,7 +300,7 @@ $ sudo yum install docker-ce
   9844b372a81a
   ```
 
-- 进入到正在运行的container中：`$ docker exec -it dedf40b94b72(container id) /bin/bash`
+- 进入到正在运行的container中：`$ docker exec -it dedf40b94b72(container id) /bin/bash`（/bin/bash表示与容器的交互方式）
 
 - 打印正在运行的container的ip地址：`docker exec -it dedf40b94b72(container id) ip a`
 
