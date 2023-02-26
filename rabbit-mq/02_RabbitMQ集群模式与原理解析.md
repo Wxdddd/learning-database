@@ -12,7 +12,7 @@
 - **warren（兔子窝）**，一个主/备方案（主节点如果挂了，从节点提供服务，和**ActiveMQ**利用zookeeper做主备一样，主备切换秒级。）
 - 主备架构模型
 
-![RabbitMQ-主备模式](02_RabbitMQ集群模式与原理解析.assets/RabbitMQ-主备模式.png)
+![RabbitMQ-主备模式](https://winnxudong.oss-cn-shanghai.aliyuncs.com/images/RabbitMQ-%E4%B8%BB%E5%A4%87%E6%A8%A1%E5%BC%8F.png)
 
 - 主备模式HaProxy配置
 
@@ -33,13 +33,13 @@
 
 - Shovel架构模型
 
-  ![image-20211209153527939](02_RabbitMQ集群模式与原理解析.assets/image-20211209153527939.png)
+  ![image-20211209153527939](https://winnxudong.oss-cn-shanghai.aliyuncs.com/images/image-20211209153527939.png)
 
   > 在使用了shovel插件后，模型变成了近端同步确认，远端异步确认的方式，大大提高了订单确认速度，并且还能保证可靠性。
 
 - Shovel集群的拓扑图
 
-  ![image-20211209154106847](02_RabbitMQ集群模式与原理解析.assets/image-20211209154106847.png)
+  ![image-20211209154106847](https://winnxudong.oss-cn-shanghai.aliyuncs.com/images/image-20211209154106847.png)
 
   > 此MQ集群可以帮我们做集群陆游的转换。第一个集群消费不过来时转移到第二个，第一个集群出现问题时可以转换到第二个。
 
@@ -53,7 +53,7 @@
 
 - RabbitMQ集群架构图
 
-  ![image-20211209155149359](02_RabbitMQ集群模式与原理解析.assets/image-20211209155149359.png)
+  ![image-20211209155149359](https://winnxudong.oss-cn-shanghai.aliyuncs.com/images/image-20211209155149359.png)
 
   > 三个mirror queue数据都保持一致。
 
@@ -69,10 +69,10 @@
 
 - 多活集群架构模式
 
-  ![image-20211209160627488](02_RabbitMQ集群模式与原理解析.assets/image-20211209160627488.png)
+  ![image-20211209160627488](https://winnxudong.oss-cn-shanghai.aliyuncs.com/images/image-20211209160627488.png)
 
 - federation插件：是一个不需要构建Cluster，而是在Brokers之间传输消息的高性能插件，federation插件可以再Brokers或者Cluster之间传输消息，连接的双方可以使用不同的users和virtual hosts，双方可以使用版本不同的RabbitMQ和Erlang。federation插件使用AMQP协议通讯，可以接受不连续的传输。
 
 - federation exchanges，可以看成Downstream从Upstream主动拉取消息（下游主动从上游拉取消息），但并不是拉取所有消息，必须是在Downstream上已经明确定义Bindings（绑定）关系的Exchange（通道），也就是有实际的物理Queue（队列）来接收消息，才会从Upstream拉取消息到Downstream。使用AMQP协议实施代理间通信，Downstream会将绑定关系组合在一起，绑定/解除绑定命令将发送到Upstream交换机。因此，federation exchanges 只接受具有订阅的消息，来自官方说明。
 
-![image-20211209201354090](02_RabbitMQ集群模式与原理解析.assets/image-20211209201354090.png)
+![image-20211209201354090](https://winnxudong.oss-cn-shanghai.aliyuncs.com/images/image-20211209201354090.png)
