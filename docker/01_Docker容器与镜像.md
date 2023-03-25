@@ -100,7 +100,7 @@ $ sudo yum-config-manager \
 ```
 
 ```shell
-$ sudo yum install docker-ce
+$ sudo yum install -y docker-ce
 ```
 
 运行docker `$ sudo systemctl start docker`
